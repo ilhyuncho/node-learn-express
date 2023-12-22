@@ -1,8 +1,39 @@
 const express = require("express");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const dotenv = require("dotenv");
 const path = require("path");
+
+dotenv.config(); // .env파일을 읽어서 process.env로 만듬
+// dotenv.config({ path: '.env.local' }); // 다른 파일로 만드는 법
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
+
+app.use(morgan("dev")); // [미들웨어: morgan]요청과 응답 정보를 콘솔에 기록
+app.use("/", express.static(path.join(__dirname, "public"))); // [미들웨어: static] 정적인 파일들을 제공하는 라우터 역할 - http://localhost:3000/test.png
+// [미들웨어:body-parser] express4.16.0 부터 내장됨, 요청 본문에 있는 데이터를 해석해서 req.body객체로 만들어주는 미들웨어
+// req.on('data'), req.on('end') 처럼 사용할 필요가 없음
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// [미들웨어:body-parser]
+app.use(cookieParser(process.env.COOKIE_SECRET)); // [미들웨어:cookie-parser] 요청에 동봉된 쿠키를 해석해 req.cookie객체를 만듬
+// 해석된 쿠키는 req.cookies객체에 들어감
+
+// [미들웨어:express-session] 세션 관리용 미들웨어, 사용자별로 req.session 객체 안에 유지
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+    name: "session-cookie",
+  })
+);
 
 app.use((req, res, next) => {
   console.log("모든 요청 실행 미들웨어");
