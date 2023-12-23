@@ -5,6 +5,7 @@ const session = require("express-session");
 const dotenv = require("dotenv");
 const path = require("path");
 const nunjucks = require("nunjucks");
+const { sequelize } = require("./models");
 
 dotenv.config(); // .env파일을 읽어서 process.env로 만듬
 // dotenv.config({ path: '.env.local' }); // 다른 파일로 만드는 법
@@ -22,6 +23,16 @@ nunjucks.configure("views", {
   express: app,
   watch: true,
 });
+
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("데이터베이스 연결 성공");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 app.use(morgan("dev")); // [미들웨어: morgan]요청과 응답 정보를 콘솔에 기록
 app.use("/", express.static(path.join(__dirname, "public"))); // [미들웨어: static] 정적인 파일들을 제공하는 라우터 역할 - http://localhost:3000/test.png
 // [미들웨어:body-parser] express4.16.0 부터 내장됨, 요청 본문에 있는 데이터를 해석해서 req.body객체로 만들어주는 미들웨어
