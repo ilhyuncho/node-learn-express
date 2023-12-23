@@ -4,3 +4,6 @@ npm i -D nodemon
 
 # dotenv를 제외한 다른 패키지는 미들웨어
 npm i morgan cookie-parser express-session dotenv
+
+#템플릿 엔진-pug
+npm i pug

@@ -13,6 +13,8 @@ const userRouter = require("./routes/user");
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 app.use(morgan("dev")); // [미들웨어: morgan]요청과 응답 정보를 콘솔에 기록
 app.use("/", express.static(path.join(__dirname, "public"))); // [미들웨어: static] 정적인 파일들을 제공하는 라우터 역할 - http://localhost:3000/test.png
