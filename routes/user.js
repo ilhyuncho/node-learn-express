@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.end("hello, User");
+  //res.end("hello, User");
+  res.render("index", { title: "pug test" });
 });
 // or
 router
