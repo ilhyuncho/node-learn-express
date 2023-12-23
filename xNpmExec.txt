@@ -5,8 +5,14 @@ npm i -D nodemon
 # dotenv를 제외한 다른 패키지는 미들웨어
 npm i morgan cookie-parser express-session dotenv
 
-#템플릿 엔진-pug
+#템플릿 엔진-pug ( 앞으로 사용하지 않음)
 npm i pug
 
 #템플릿 엔진-넌적스
 npm i nunjucks
+
+#sequelize ( db연결)
+npm i sequelize sequelize-cli mariadb
+
+# sequelize 설치 (config, models, migrations, seeders 폴더 생성)
+npx sequelize init
