@@ -7,3 +7,6 @@ npm i morgan cookie-parser express-session dotenv
 
 #템플릿 엔진-pug
 npm i pug
+
+#템플릿 엔진-넌적스
+npm i nunjucks
