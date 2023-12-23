@@ -72,13 +72,20 @@ app.use("/user", userRouter);
 
 // 일치하는 라우터가 없을떄 404 상태 코드를 응답하는 역할
 app.use((req, res, next) => {
-  res.status(404).send("Not Found");
+  //res.status(404).send("Not Found");
+  const error = new Error(`${req.method} ${req.url} 라우터가 없습니다`);
+  error.status = 404;
+  next(error);
 });
 
 // 에러 처리
 app.use((err, req, res, next) => {
-  console.log("에러처리");
-  res.status(500).send(err.message);
+  console.log("에러처리", err.message);
+  //res.status(500).send(err.message);
+  res.locals.message = err.message; // res.render 함수에 변수를 대입하는 방법도 있음
+  res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
+  res.status(err.status || 500);
+  res.render("error");
 });
 
 app.listen(app.get("port"), () => {
