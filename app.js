@@ -8,6 +8,9 @@ const path = require("path");
 dotenv.config(); // .env파일을 읽어서 process.env로 만듬
 // dotenv.config({ path: '.env.local' }); // 다른 파일로 만드는 법
 
+const indexRouter = require("./routes");
+const userRouter = require("./routes/user");
+
 const app = express();
 app.set("port", process.env.PORT || 3000);
 
@@ -51,19 +54,22 @@ app.use(
   //   }
 );
 
-app.get("/", (req, res) => {
-  console.log("get요청만 실행");
-  res.sendFile(path.join(__dirname, "/index.html"));
-});
+// app.get("/", (req, res) => {
+//   console.log("get요청만 실행");
+//   res.sendFile(path.join(__dirname, "/index.html"));
+// });
 
-app.get("/test", (req, res) => {
-  console.log("get test 요청만 실행");
-  res.sendFile(path.join(__dirname, "/index.html"));
+app.use("/", indexRouter);
+app.use("/user", userRouter);
+
+// 일치하는 라우터가 없을떄 404 상태 코드를 응답하는 역할
+app.use((req, res, next) => {
+  res.status(404).send("Not Found");
 });
 
 // 에러 처리
 app.use((err, req, res, next) => {
-  console.log("get요청 미들웨어");
+  console.log("에러처리");
   res.status(500).send(err.message);
 });
 
