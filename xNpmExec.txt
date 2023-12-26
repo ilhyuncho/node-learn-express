@@ -16,3 +16,5 @@ npm i sequelize sequelize-cli mariadb
 
 # sequelize 설치 (config, models, migrations, seeders 폴더 생성)
 npx sequelize init
+
+npm i axios

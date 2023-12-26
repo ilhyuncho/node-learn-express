@@ -12,6 +12,7 @@ dotenv.config(); // .env파일을 읽어서 process.env로 만듬
 
 const indexRouter = require("./routes");
 const userRouter = require("./routes/user");
+const commentsRouter = require("./routes/comments");
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -79,7 +80,8 @@ app.use(
 // });
 
 app.use("/", indexRouter);
-app.use("/user", userRouter);
+app.use("/users", userRouter);
+app.use("/comments", commentsRouter);
 
 // 일치하는 라우터가 없을떄 404 상태 코드를 응답하는 역할
 app.use((req, res, next) => {
