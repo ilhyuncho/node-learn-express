@@ -11,8 +11,14 @@ dotenv.config(); // .env파일을 읽어서 process.env로 만듬
 // dotenv.config({ path: '.env.local' }); // 다른 파일로 만드는 법
 
 const indexRouter = require("./routes");
-const userRouter = require("./routes/user");
-const commentsRouter = require("./routes/comments");
+// mariaDB 사용할때
+// const userRouter = require("./routes/user");
+// const commentsRouter = require("./routes/comments");
+//mongoDB 사용할때
+const userRouter = require("./routes/user_mongo");
+const commentsRouter = require("./routes/comments_mongo");
+
+const connect = require("./schemas");
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -24,6 +30,9 @@ nunjucks.configure("views", {
   express: app,
   watch: true,
 });
+
+// mongoose 연결
+connect();
 
 sequelize
   .sync({ force: false })
